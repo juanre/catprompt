@@ -1,0 +1,11 @@
+++ System prompt
+
+catprompt gets the name of a text file from the command line, reads it, processes it, and copies processed content to the clipboard. The processing is:
+
+- Ignore lines that start with ++
+- If a line starts with += consider the rest of the line the name of a file. Try to read the name of the file in the directory where the original file is if it is present, or in the working directory otherwise. Read and process the file, and replace the line with the processed contents.
+- If a line starts with +# ignore it and all the following lines of the file being processed.
+
++# Prompt
+
+Can you write a python program that does this.

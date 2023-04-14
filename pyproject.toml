@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+
+[project]
+name = "catprompt"
+version = "0.0.1"
+description = "Combine prompts for chatgpt."
+readme = "README.md"
+authors = [
+    { name = "Juan Reyero", email="juan@juanreyero.com" }
+]
+requires-python = ">=3.8"
+license = { file="LICENSE" }
+dependencies = [
+    "clipboard"
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.optional-dependencies]
+dev = [
+    "jedi >= 0.18.1",
+    "pylint >= 2.13.9",
+    "pytest >= 7.0.0",
+    "yapf >= 0.32.0"
+]
+
+[project.scripts]
+catprompt = "catprompt:main"
+
+[tool.pytest.ini_options]
+addopts = "--doctest-modules --ignore=build --ignore=doc --ignore=flymake"
+pythonpath = [
+  "."
+]

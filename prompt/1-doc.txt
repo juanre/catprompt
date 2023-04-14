@@ -1,0 +1,7 @@
+++ Create a README
+
++= 0-system.txt
+
+catprompt is used to combine prompts in different files for programming with ChagGPT. It allows users to define a system prompt plus several functionality-specific prompts, possibly including files with code, into a single prompt. The prompt files can be part of the project, and later be used as the seed for documentation.
+
+Can you expand this description in a README.md that fully documents catprompt, including examples? Do it in markdown that I can copy and paste.

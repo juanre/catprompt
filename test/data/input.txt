@@ -1,0 +1,7 @@
+This is a normal line.
+++ This line should be ignored.
++= include.txt
+Another normal line.
+
++# Nothing else
+Ignored line
