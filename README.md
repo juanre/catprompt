@@ -26,7 +26,9 @@ Using `catprompt` when developing a large program with ChatGPT offers several ad
 
 ## Installation
 
-To install catprompt:
+`pip install catprompt`
+
+or
 
 1. Visit the homepage at https://github.com/juanre/catprompt
 2. Download the package as a ZIP file or clone the repository using git
