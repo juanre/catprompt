@@ -29,7 +29,7 @@ dev = [
 ]
 
 [project.scripts]
-catprompt = "catprompt:main"
+catprompt = "catprompt:prompter.main"
 
 [tool.pytest.ini_options]
 addopts = "--doctest-modules --ignore=build --ignore=doc --ignore=flymake"

@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from catprompt import process_and_copy_to_clipboard
+from catprompt.prompter import process_and_copy_to_clipboard
 import clipboard
 
 

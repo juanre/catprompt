@@ -1,13 +1,14 @@
 import sys
-import os
 from pathlib import Path
 import clipboard
 
 
+# pylint: disable=inconsistent-return-statements
 def process_line(line, base_dir, processed_lines):
     if line.startswith('++'):
         return
-    elif line.startswith('+='):
+
+    if line.startswith('+='):
         file_to_include = line[2:].strip()
         file_path = base_dir / file_to_include
         if not file_path.is_file():
@@ -42,7 +43,7 @@ def process_and_copy_to_clipboard(file_path):
 
 def main():
     if len(sys.argv) != 2:
-        print("Usage: python catprompt.py <input_file>")
+        print("Usage: catprompt <input_file>")
         sys.exit(1)
 
     input_file = sys.argv[1]
