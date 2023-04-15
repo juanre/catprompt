@@ -1,6 +1,9 @@
+# -*- coding: utf-8 -*-
+
 import sys
 from pathlib import Path
 import clipboard
+import tiktoken
 
 
 # pylint: disable=inconsistent-return-statements
@@ -14,7 +17,10 @@ def process_line(line, base_dir, processed_lines):
         if not file_path.is_file():
             file_path = Path(file_to_include)
         if file_path.is_file():
+            print(f'Including {str(file_path)}')
             process_file(file_path, processed_lines)
+        else:
+            raise RuntimeError(f'Cannot find {file_to_include}')
     elif line.startswith('+#'):
         return False
     else:
@@ -53,8 +59,11 @@ def main():
         print(f"Error: '{input_file}' not found.")
         sys.exit(1)
 
-    process_and_copy_to_clipboard(file_path)
-    print("Processed content copied to clipboard.")
+    processed_content = process_and_copy_to_clipboard(file_path)
+    encoding = 'cl100k_base'
+    tokenizer = tiktoken.get_encoding(encoding)
+    tokens = tokenizer.encode(processed_content)
+    print(f"Processed content copied to clipboard, {len(tokens)} {encoding} tokens")
 
 
 if __name__ == "__main__":
