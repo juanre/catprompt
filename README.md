@@ -41,6 +41,7 @@ Make sure you have `pip` installed on your system. If not, you can find instruct
 
 - Lines starting with `++` are ignored
 - Lines starting with `+=` should be followed by the name of a file to include. The file will be searched for in the directory of the original file, or in the working directory if not found there. The named file will be read, processed, and its content will replace the current line.
+- Lines starting with `+-` should be followed by the name of a file to include, and a description. The file will processed as above, and its content prefaced by a line saying "[description] follows delimited by +-----" and another line with just +-----, and followed by a line with +-----
 - Lines starting with `+#` will cause the current line and all following lines in the file being processed to be ignored
 
 ### Example
@@ -54,7 +55,7 @@ This is the main prompt.
 
 ++ This is a comment and will be ignored.
 += sub_prompt_1.txt
-+= code_snippet.py
++- code_snippet.py The snippet of code
 
 This is the end of the main prompt.
 ```
@@ -82,8 +83,11 @@ When running `catprompt main_prompt.txt`, the processed content will be:
 ```
 This is the main prompt.
 This is the sub-prompt 1.
+The snippet of code follows delimited by +-----
++-----
 def example_function():
     return "This is an example code snippet."
++-----
 This is the end of the main prompt.
 ```
 
@@ -99,7 +103,7 @@ This processed content will be copied to your clipboard, ready for use with Chat
 ## Developing
 
 ```
-mkdir ~/venv/catp && python3.9 -m venv ~/venv/catp
+mkdir ~/venv/catp && python -m venv ~/venv/catp
 source ~/venv/catp/bin/activate
 pip install --upgrade pip
 pip install -e .

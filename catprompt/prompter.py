@@ -10,7 +10,6 @@ import tiktoken
 def process_line(line, base_dir, processed_lines):
     if line.startswith('++'):
         return
-
     if line.startswith('+='):
         file_to_include = line[2:].strip()
         file_path = base_dir / file_to_include
@@ -19,6 +18,22 @@ def process_line(line, base_dir, processed_lines):
         if file_path.is_file():
             print(f'Including {str(file_path)}')
             process_file(file_path, processed_lines)
+        else:
+            raise RuntimeError(f'Cannot find {file_to_include}')
+    elif line.startswith('+-'):
+        file_to_include, description = line[2:].strip().split(maxsplit=1)
+        file_path = base_dir / file_to_include
+        if not file_path.is_file():
+            file_path = Path(file_to_include)
+        if file_path.is_file():
+            with file_path.open(encoding='utf-8') as f:
+                content = f.read().strip()
+            processed_lines.extend([
+                f"{description} follows delimited by +-----",
+                "+-----",
+                content,
+                "+-----"
+            ])
         else:
             raise RuntimeError(f'Cannot find {file_to_include}')
     elif line.startswith('+#'):

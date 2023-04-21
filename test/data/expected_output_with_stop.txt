@@ -1,5 +1,0 @@
-This is the main file.
-Included line 1.
-Included line 2.
-This line should be included after the included file.
-

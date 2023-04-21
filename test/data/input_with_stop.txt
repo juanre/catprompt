@@ -1,4 +1,0 @@
-This is the main file.
-+= test/data/include_with_stop.txt
-This line should be included after the included file.
-

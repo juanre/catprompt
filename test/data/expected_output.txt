@@ -1,5 +1,0 @@
-This is a normal line.
-Included line 1.
-Included line 2.
-Another normal line.
-

@@ -1,5 +1,0 @@
-Included line 1.
-Included line 2.
-+#
-This line should not be included.
-
