@@ -1,0 +1,16 @@
+++ Include program files
+
++= 0-system.txt
+
+Code implementing catprompt follows delimited by +-----
+
++-----
++= catprompt/prompter.py
++-----
+
+We want to rewrite process_line so that when a line starts with +- it will consider the rest of the line the name of a file followed by a description, and it will replace with:
+
+[description] follows delimited by +-----
++-----
+[the content of the file]
++-----

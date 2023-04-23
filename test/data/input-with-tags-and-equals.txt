@@ -1,0 +1,4 @@
+This is a sample input file.
++=include-tags.txt [tag-1]
+This is the end of the sample input file.
+

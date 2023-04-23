@@ -1,0 +1,5 @@
+This is a sample input file.
+Included line 1 with tag-1.
+Included line 2 with tag-1.
+This is the end of the sample input file.
+

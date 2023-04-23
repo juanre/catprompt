@@ -1,0 +1,9 @@
+++ Include program files
+
++= 0-system.txt
+
++- catprompt/prompter.py The current implementation of catprompt
+
+We want to rewrite the implementation of the process_line function so that:
+
+Say file-1 is including file-2, either with a += line or with a +- line, and the line has a tag between brackets just after the file name, like [tag-0], then only lines in the included file that occur between lines containing :prompt:tag-0 and lines containing :/prompt:tag-0 will be included. There could be several such sections in a file. The tag is optional; if no tag is defined the whole file is included.

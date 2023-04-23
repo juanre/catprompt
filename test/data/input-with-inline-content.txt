@@ -1,0 +1,3 @@
+This is a sample input file.
++- include.txt The included file
+

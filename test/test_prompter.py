@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+
+import os
 from pathlib import Path
 from catprompt.prompter import process_and_copy_to_clipboard
 import clipboard
@@ -60,3 +63,33 @@ def test_process_file_with_inline_content():
     # Check if processed content was copied to clipboard
     clipboard_content = clipboard.paste()
     assert processed_content == clipboard_content
+
+
+def test_process_file_with_tags_and_equals():
+    # Prepare test data
+    test_data_dir = Path(os.path.dirname(os.path.abspath(__file__))) / "data"
+    input_file = test_data_dir / "input-with-tags-and-equals.txt"
+    expected_output_file = test_data_dir / "expected-output-with-tags-and-equals.txt"
+
+    # Run process_and_copy_to_clipboard
+    processed_content = process_and_copy_to_clipboard(input_file)
+
+    # Compare the processed content with the expected output
+    with expected_output_file.open() as f:
+        expected_output = f.read().rstrip()
+    assert processed_content == expected_output
+
+
+def test_process_file_with_tags_and_minus():
+    # Prepare test data
+    test_data_dir = Path(os.path.dirname(os.path.abspath(__file__))) / "data"
+    input_file = test_data_dir / "input-with-tags-and-minus.txt"
+    expected_output_file = test_data_dir / "expected-output-with-tags-and-minus.txt"
+
+    # Run process_and_copy_to_clipboard
+    processed_content = process_and_copy_to_clipboard(input_file)
+
+    # Compare the processed content with the expected output
+    with expected_output_file.open() as f:
+        expected_output = f.read().rstrip()
+    assert processed_content == expected_output
