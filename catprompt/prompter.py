@@ -62,10 +62,10 @@ def process_included_file(file_path, tag, processed_lines, with_delimiter, descr
     with file_path.open() as f:
         for line in f:
             line = line.rstrip()
-            if tag and line.startswith(tag_start):
+            if tag and tag_start in line:
                 include = True
                 continue
-            if tag and line.startswith(tag_end):
+            if tag and tag_end in line:
                 include = False
                 continue
             if include:

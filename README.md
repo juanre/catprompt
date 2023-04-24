@@ -43,6 +43,7 @@ Make sure you have `pip` installed on your system. If not, you can find instruct
 - Lines starting with `+=` should be followed by the name of a file to include. The file will be searched for in the directory of the original file, or in the working directory if not found there. The named file will be read, processed, and its content will replace the current line.
 - Lines starting with `+-` should be followed by the name of a file to include, and a description. The file will processed as above, and its content prefaced by a line saying "[description] follows delimited by +-----" and another line with just +-----, and followed by a line with +-----
 - Lines starting with `+#` will cause the current line and all following lines in the file being processed to be ignored
+- Segments of a file can be tagged by adding a line that contains :prompt:tag at the beginning, and :/prompt:tag at the end. Include them by adding [tag] after the file name.
 
 ### Example
 
@@ -56,6 +57,7 @@ This is the main prompt.
 ++ This is a comment and will be ignored.
 += sub_prompt_1.txt
 +- code_snippet.py The snippet of code
++- code_snippet.py [tag-1] The snippet of code limited to tag-1
 
 This is the end of the main prompt.
 ```
@@ -74,8 +76,21 @@ you probably don't want when the file is included by another file
 **code_snippet.py**
 
 ```python
-def example_function():
-    return "This is an example code snippet."
+def example_function_1():
+    return "F1"
+
+# :prompt:tag-1
+def example_function_2():
+    return "F2"
+# :/prompt:tag-1
+
+def example_function_3():
+    return "F3"
+
+# :prompt:tag-1
+def example_function_4():
+    return "F4"
+# :/prompt:tag-1
 ```
 
 When running `catprompt main_prompt.txt`, the processed content will be:
@@ -85,8 +100,28 @@ This is the main prompt.
 This is the sub-prompt 1.
 The snippet of code follows delimited by +-----
 +-----
-def example_function():
-    return "This is an example code snippet."
+def example_function_1():
+    return "F1"
+
+# :prompt:tag-1
+def example_function_2():
+    return "F2"
+# :/prompt:tag-1
+
+def example_function_3():
+    return "F3"
+
+# :prompt:tag-1
+def example_function_4():
+    return "F4"
+# :/prompt:tag-1
++-----
+The snippet of code limited to tag-1 follows delimited by +-----
++-----
+def example_function_2():
+    return "F2"
+def example_function_4():
+    return "F4"
 +-----
 This is the end of the main prompt.
 ```

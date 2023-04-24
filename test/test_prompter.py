@@ -73,10 +73,13 @@ def test_process_file_with_tags_and_equals():
 
     # Run process_and_copy_to_clipboard
     processed_content = process_and_copy_to_clipboard(input_file)
+    print(processed_content)
+    print()
 
     # Compare the processed content with the expected output
     with expected_output_file.open() as f:
         expected_output = f.read().rstrip()
+        print(expected_output)
     assert processed_content == expected_output
 
 

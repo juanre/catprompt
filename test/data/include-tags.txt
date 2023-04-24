@@ -1,11 +1,12 @@
 Included line 1 without tag.
 Included line 2 without tag.
-:prompt:tag-1
+++ :prompt:tag-1
 Included line 1 with tag-1.
 Included line 2 with tag-1.
-:/prompt:tag-1
-:prompt:tag-2
+++ :/prompt:tag-1
+++ :prompt:tag-2
 Included line 1 with tag-2.
-Included line 2 with tag-2.
-:/prompt:tag-2
-
+++ :prompt:tag-1
+Included line 2 with tag-1 and tag-2.
+++ :/prompt:tag-2
+++ :/prompt:tag-1
