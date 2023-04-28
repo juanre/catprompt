@@ -18,9 +18,9 @@ Using `catprompt` when developing a large program with ChatGPT offers several ad
 
 1. Install catprompt
 2. Create your prompt files
-3. Run catprompt with the main prompt file as a command-line argument:
+3. Run catprompt with the main prompt file[s] as a command-line argument:
 
-`catprompt path/to/prompt.txt`
+`catprompt path/to/prompt.txt [path/to/other-prompts.txt]`
 
 4. Use the processed content from the clipboard
 
