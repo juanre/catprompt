@@ -49,20 +49,20 @@ Make sure you have `pip` installed on your system. If not, you can find instruct
 
 Let's consider the following example with three files:
 
-**main_prompt.txt**
+**main-prompt.txt**
 
 ```
 This is the main prompt.
 
 ++ This is a comment and will be ignored.
-+= sub_prompt_1.txt
-+- code_snippet.py The snippet of code
-+- code_snippet.py [tag-1] The snippet of code limited to tag-1
++= sub-prompt-1.txt
++- code-snippet.py The snippet of code
++- code-snippet.py [tag-1] The snippet of code limited to tag-1
 
 This is the end of the main prompt.
 ```
 
-**sub_prompt_1.txt**
+**sub-prompt-1.txt**
 
 ```
 This is the sub-prompt 1.
@@ -73,7 +73,7 @@ This is useful to record the prompt that you used with this file,  which
 you probably don't want when the file is included by another file
 ```
 
-**code_snippet.py**
+**code-snippet.py**
 
 ```python
 def example_function_1():
@@ -93,7 +93,7 @@ def example_function_4():
 # :/prompt:tag-1
 ```
 
-When running `catprompt main_prompt.txt`, the processed content will be:
+When running `catprompt main-prompt.txt`, the processed content will be:
 
 ```
 This is the main prompt.
@@ -102,15 +102,12 @@ The snippet of code follows delimited by +-----
 +-----
 def example_function_1():
     return "F1"
-
 # :prompt:tag-1
 def example_function_2():
     return "F2"
 # :/prompt:tag-1
-
 def example_function_3():
     return "F3"
-
 # :prompt:tag-1
 def example_function_4():
     return "F4"

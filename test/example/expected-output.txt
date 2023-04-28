@@ -1,0 +1,26 @@
+This is the main prompt.
+This is the sub-prompt 1.
+The snippet of code follows delimited by +-----
++-----
+def example_function_1():
+    return "F1"
+# :prompt:tag-1
+def example_function_2():
+    return "F2"
+# :/prompt:tag-1
+def example_function_3():
+    return "F3"
+# :prompt:tag-1
+def example_function_4():
+    return "F4"
+# :/prompt:tag-1
++-----
+The snippet of code limited to tag-1 follows delimited by +-----
++-----
+def example_function_2():
+    return "F2"
+def example_function_4():
+    return "F4"
++-----
+This is the end of the main prompt.
+

@@ -98,18 +98,26 @@ def process_and_copy_to_clipboard(file_path):
 
 
 def main():
-    if len(sys.argv) != 2:
-        print("Usage: catprompt <input_file>")
+    if len(sys.argv) < 2:
+        print("Usage: catprompt <input_file> [<input_files>]")
         sys.exit(1)
 
-    input_file = sys.argv[1]
-    file_path = Path(input_file)
+    input_files = sys.argv[1:]
+    processed_lines = []
 
-    if not file_path.is_file():
-        print(f"Error: '{input_file}' not found.")
-        sys.exit(1)
+    for input_file in input_files:
+        file_path = Path(input_file)
 
-    processed_content = process_and_copy_to_clipboard(file_path)
+        if not file_path.is_file():
+            print(f"Error: '{input_file}' not found.")
+            sys.exit(1)
+
+        print(f'Reading {input_file}')
+        process_file(file_path, processed_lines)
+
+    processed_content = "\n".join(filter(None, processed_lines))
+    clipboard.copy(processed_content)
+
     encoding = 'cl100k_base'
     tokenizer = tiktoken.get_encoding(encoding)
     tokens = tokenizer.encode(processed_content)

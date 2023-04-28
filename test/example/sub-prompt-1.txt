@@ -1,0 +1,7 @@
+This is the sub-prompt 1.
++# Ignore the rest of this file
+This line will be ignored.
+
+This is useful to record the prompt that you used with this file,  which
+you probably don't want when the file is included by another file
+

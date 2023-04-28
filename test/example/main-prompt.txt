@@ -1,0 +1,9 @@
+This is the main prompt.
+
+++ This is a comment and will be ignored.
++= sub-prompt-1.txt
++- code-snippet.py The snippet of code
++- code-snippet.py [tag-1] The snippet of code limited to tag-1
+
+This is the end of the main prompt.
+
