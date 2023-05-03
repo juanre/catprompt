@@ -18,11 +18,43 @@ Using `catprompt` when developing a large program with ChatGPT offers several ad
 
 1. Install catprompt
 2. Create your prompt files
-3. Run catprompt with the main prompt file[s] as a command-line argument:
+3. Run catprompt with the main prompt file[s] as a command-line argument, along with any options:
 
-`catprompt path/to/prompt.txt [path/to/other-prompts.txt]`
+`catprompt [-r reverse_file] [-f flavor] path/to/prompt.txt [path/to/other-prompts.txt] [-c config_file]`
 
-4. Use the processed content from the clipboard
+4. Use the processed content from the clipboard in ChatGPT.
+
+### Options
+
+- `-c`, `--config`: Specify one or more configuration files containing private words and flavors (default: ~/.catprompt.ini and ./catprompt.ini).
+- `-r`, `--reverse`: Reverse the privatization from a given file and output the original content to stdout.
+- `-f`, `--flavor`: Use a flavor to prefix the output, extracted from the config file.
+
+## Configuration Files (ini files)
+
+Configuration files (`.ini` format) can be used to store private words and flavors. By default, catprompt looks for configuration files at `~/.catprompt.ini` and `./catprompt.ini`. You can specify other locations using the `-c` or `--config` option.
+
+### Private Words
+
+Private words are words that should be replaced with placeholders in the output. To define private words, create a section called `PrivateWords` and list them as a comma-separated string under the `list` key:
+
+```
+[PrivateWords]
+list = private_word_1, private_word_2, private_word_3
+```
+
+
+### Flavors
+
+Flavors are prefixes that can be added to the output. To define flavors, create a section called `Flavors` and list them as key-value pairs:
+
+```
+[Flavors]
+python = When programming in python follow the following rules, enclosed in ```:\n```\nAlways follow PEP-8 conventions.\n\nAlways prefer '' vs "" for strings. File names should be composed only with letters, numbers and dashes, not with underscores.\n\nThe first line of a python file is always # -*- coding: utf-8 -*-\n\nMake sure that the code formatting complies with PEP-8.\n\nUse pytest for tests.\n\nInput is from the command line whenever it makes sense. When the input is from the command line this is added at the end:\n\nif __name__ == '__main__':\n    main()\n\nand the functionality is implemented in main.
+javascript = Your setup for javascript programming.
+```
+
+You can use the `-f` or `--flavor` option to specify the desired flavor when running `catprompt`.
 
 ## Installation
 
@@ -41,7 +73,7 @@ Make sure you have `pip` installed on your system. If not, you can find instruct
 
 - Lines starting with `++` are ignored
 - Lines starting with `+=` should be followed by the name of a file to include. The file will be searched for in the directory of the original file, or in the working directory if not found there. The named file will be read, processed, and its content will replace the current line.
-- Lines starting with `+-` should be followed by the name of a file to include, and a description. The file will processed as above, and its content prefaced by a line saying "[description] follows delimited by +-----" and another line with just +-----, and followed by a line with +-----
+- Lines starting with `+-` should be followed by the name of a file to include, and a description. The file will processed as above, and its content prefaced by a line saying "[description] follows delimited by \`\`\` and another line with just \`\`\` and followed by a line with \`\`\`
 - Lines starting with `+#` will cause the current line and all following lines in the file being processed to be ignored
 - Segments of a file can be tagged by adding a line that contains :prompt:tag at the beginning, and :/prompt:tag at the end. Include them by adding [tag] after the file name.
 
@@ -98,8 +130,8 @@ When running `catprompt main-prompt.txt`, the processed content will be:
 ```
 This is the main prompt.
 This is the sub-prompt 1.
-The snippet of code follows delimited by +-----
-+-----
+The snippet of code follows delimited by \`\`\`
+\`\`\`
 def example_function_1():
     return "F1"
 # :prompt:tag-1
@@ -112,14 +144,14 @@ def example_function_3():
 def example_function_4():
     return "F4"
 # :/prompt:tag-1
-+-----
-The snippet of code limited to tag-1 follows delimited by +-----
-+-----
+\`\`\`
+The snippet of code limited to tag-1 follows delimited by \`\`\`
+\`\`\`
 def example_function_2():
     return "F2"
 def example_function_4():
     return "F4"
-+-----
+\`\`\`
 This is the end of the main prompt.
 ```
 

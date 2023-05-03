@@ -1,7 +1,7 @@
 This is a sample input file.
-The included file follows delimited by +-----
-+-----
+The included file follows delimited by ```
+```
 Included line 1 with tag-2.
 Included line 2 with tag-1 and tag-2.
-+-----
+```
 This is the end of the sample input file.

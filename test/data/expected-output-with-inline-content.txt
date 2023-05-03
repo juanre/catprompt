@@ -1,6 +1,6 @@
 This is a sample input file.
-The included file follows delimited by +-----
-+-----
+The included file follows delimited by ```
+```
 Included line 1.
 Included line 2.
-+-----
+```

@@ -1,0 +1,9 @@
+++ Include program files
+
++= 0-system.txt
+
++- catprompt/prompter.py The current implementation of catprompt
+
+Can you update the README so that the invocation examples include the possible options, and there is a description of the ini files, their possible content, and where they are?
+
+Only give me the changes. This is the README.md file:

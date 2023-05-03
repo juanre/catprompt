@@ -1,0 +1,9 @@
+++ Include program files
+
++= 0-system.txt
+
++- catprompt/prompter.py The current implementation of catprompt
+
+We want to read initialization values from a .ini file. If ~/.catprompt.ini exists it should be read. If a catprompt.ini exists in the current folder it should be read, and its contents should override the contents of ~/.catprompt.ini if that existed.
+
+The ini file should contain a list of private words. Private words are words that should be replaced by a meaningless string before writing the output or copying it to the clipboard. The meaningless string for a given word should alwasy be the same across callings of the program.

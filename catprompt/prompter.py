@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import sys
+import os
+import argparse
+import configparser
 from pathlib import Path
 import clipboard
 import tiktoken
@@ -55,8 +58,8 @@ def process_included_file(file_path, tag, processed_lines, with_delimiter, descr
     if with_delimiter:
         description = description if description else file_path.name
         processed_lines.extend([
-            f"{description} follows delimited by +-----",
-            "+-----",
+            f"{description} follows delimited by ```",
+            "```",
         ])
 
     with file_path.open() as f:
@@ -74,7 +77,7 @@ def process_included_file(file_path, tag, processed_lines, with_delimiter, descr
                     break
 
     if with_delimiter:
-        processed_lines.append("+-----")
+        processed_lines.append("```")
 
 
 def process_file(file_path, processed_lines=None):
@@ -97,25 +100,105 @@ def process_and_copy_to_clipboard(file_path):
     return processed_content
 
 
+def read_config_files(config_files):
+    config = configparser.ConfigParser()
+
+    for config_file in config_files:
+        if os.path.exists(config_file):
+            config.read(config_file)
+
+    private_words = []
+    if config.has_section("PrivateWords"):
+        private_words = [word.strip() for word in config.get("PrivateWords", "list").split(',')]
+
+    flavors = {}
+    if config.has_section("Flavors"):
+        for key in config.options("Flavors"):
+            flavors[key] = config.get("Flavors", key).replace("\\n", "\n")
+
+    return private_words, flavors
+
+
+def replace_private_words(content, private_words):
+    replacement_map = {}
+    for word in private_words:
+        if word not in replacement_map:
+            replacement_map[word] = f"private{len(replacement_map)}"
+
+        content = content.replace(word, replacement_map[word])
+
+    return content
+
+
+def reverse_private_words(content, private_words):
+    replacement_map = {}
+    for word in private_words:
+        if word not in replacement_map:
+            replacement_map[word] = f"private{len(replacement_map)}"
+
+    reversed_map = {v: k for k, v in replacement_map.items()}
+
+    for key, value in reversed_map.items():
+        content = content.replace(key, value)
+
+    return content
+
+
 def main():
-    if len(sys.argv) < 2:
-        print("Usage: catprompt <input_file> [<input_files>]")
+    parser = argparse.ArgumentParser(
+        description="Process text files and copy processed content to the clipboard")
+    parser.add_argument("input_files", metavar="input_file", type=str, nargs="*",
+                        help="Input file(s) to process")
+    parser.add_argument("-c", "--config", metavar="config_file", type=str, nargs="*",
+                        default=[os.path.expanduser("~/.catprompt.ini"), "catprompt.ini"],
+                        help=("Configuration file(s) containing private words and "
+                              "flavors: (default: ~/.catprompt.ini and ./catprompt.ini)"))
+    parser.add_argument("-r", "--reverse", metavar="reverse_file", type=str,
+                        help=("Reverse the privatization from a given file and output "
+                              "the original content to stdout"))
+    parser.add_argument("-f", "--flavor", metavar="flavor", type=str,
+                        help=("The flavor to use to prefix the output, extracted"
+                              "from the config file file"))
+
+    args = parser.parse_args()
+
+    if not args.input_files and not args.reverse:
+        print("Error: No input files or reverse file specified.")
         sys.exit(1)
 
-    input_files = sys.argv[1:]
+    config_files = args.config
+
+    private_words, flavors = read_config_files(config_files)
+
+    flavor_text = ""
+    if args.flavor:
+        flavor = args.flavor.lower()
+        if flavor not in flavors:
+            print(f"Error: Flavor '{args.flavor}' not found in the configuration files.")
+            sys.exit(1)
+        flavor_text = flavors[flavor]
+
+    if args.reverse:
+        with open(args.reverse, "r", encoding='utf-8') as reverse_file:
+            content = reverse_file.read()
+            original_content = reverse_private_words(content, private_words)
+            print(original_content)
+            return
+
+    input_files = args.input_files
     processed_lines = []
 
     for input_file in input_files:
         file_path = Path(input_file)
-
         if not file_path.is_file():
             print(f"Error: '{input_file}' not found.")
             sys.exit(1)
-
         print(f'Reading {input_file}')
         process_file(file_path, processed_lines)
 
     processed_content = "\n".join(filter(None, processed_lines))
+    processed_content = flavor_text + '\n\n' + \
+        replace_private_words(processed_content, private_words)
     clipboard.copy(processed_content)
 
     encoding = 'cl100k_base'

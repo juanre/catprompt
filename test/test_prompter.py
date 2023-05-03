@@ -2,7 +2,7 @@
 
 import os
 from pathlib import Path
-from catprompt.prompter import process_and_copy_to_clipboard
+from catprompt.prompter import process_and_copy_to_clipboard, replace_private_words
 import clipboard
 
 
@@ -96,3 +96,13 @@ def test_process_file_with_tags_and_minus():
     with expected_output_file.open() as f:
         expected_output = f.read().rstrip()
     assert processed_content == expected_output
+
+
+def test_replace_private_words():
+    content = "This is a test with some privateWord1 and privateWord2."
+    private_words = ["privateWord1", "privateWord2"]
+
+    expected_output = "This is a test with some private0 and private1."
+    output = replace_private_words(content, private_words)
+
+    assert output == expected_output
