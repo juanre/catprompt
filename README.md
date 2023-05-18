@@ -27,8 +27,9 @@ Using `catprompt` when developing a large program with ChatGPT offers several ad
 ### Options
 
 - `-c`, `--config`: Specify one or more configuration files containing private words and flavors (default: ~/.catprompt.ini and ./catprompt.ini).
-- `-r`, `--reverse`: Reverse the privatization from a given file and output the original content to stdout.
+- `-u`, `--unscramble`: Reverse the scrambling of private words from a given file, output to stdout.
 - `-f`, `--flavor`: Use a flavor to prefix the output, extracted from the config file.
+- `-v`, `--stay-verbose`: Do not append "Be concise" to the prompt.
 
 ## Configuration Files (ini files)
 
@@ -36,7 +37,7 @@ Configuration files (`.ini` format) can be used to store private words and flavo
 
 ### Private Words
 
-Private words are words that should be replaced with placeholders in the output. To define private words, create a section called `PrivateWords` and list them as a comma-separated string under the `list` key:
+Private words are words that should be scrambled in the output. To define private words, create a section called `PrivateWords` and list them as a comma-separated string under the `list` key:
 
 ```
 [PrivateWords]

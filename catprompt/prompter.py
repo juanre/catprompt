@@ -130,15 +130,15 @@ def replace_private_words(content, private_words):
     return content
 
 
-def reverse_private_words(content, private_words):
+def unscramble_private_words(content, private_words):
     replacement_map = {}
     for word in private_words:
         if word not in replacement_map:
             replacement_map[word] = f"private{len(replacement_map)}"
 
-    reversed_map = {v: k for k, v in replacement_map.items()}
+    unscrambled_map = {v: k for k, v in replacement_map.items()}
 
-    for key, value in reversed_map.items():
+    for key, value in unscrambled_map.items():
         content = content.replace(key, value)
 
     return content
@@ -146,24 +146,26 @@ def reverse_private_words(content, private_words):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Process text files and copy processed content to the clipboard")
-    parser.add_argument("input_files", metavar="input_file", type=str, nargs="*",
-                        help="Input file(s) to process")
-    parser.add_argument("-c", "--config", metavar="config_file", type=str, nargs="*",
-                        default=[os.path.expanduser("~/.catprompt.ini"), "catprompt.ini"],
-                        help=("Configuration file(s) containing private words and "
-                              "flavors: (default: ~/.catprompt.ini and ./catprompt.ini)"))
-    parser.add_argument("-r", "--reverse", metavar="reverse_file", type=str,
-                        help=("Reverse the privatization from a given file and output "
-                              "the original content to stdout"))
-    parser.add_argument("-f", "--flavor", metavar="flavor", type=str,
-                        help=("The flavor to use to prefix the output, extracted"
-                              "from the config file file"))
+        description='Process text files and copy processed content to the clipboard')
+    parser.add_argument('input_files', metavar='input_file', type=str, nargs='*',
+                        help='Input file(s) to process')
+    parser.add_argument('-c', '--config', metavar='config_file', type=str, nargs='*',
+                        default=[os.path.expanduser('~/.catprompt.ini'), 'catprompt.ini'],
+                        help=('Configuration file(s) containing private words and '
+                              'flavors: (default: ~/.catprompt.ini and ./catprompt.ini)'))
+    parser.add_argument('-u', '--unscramble', type=str,
+                        help=('Reverse the scrambling of private words from a given file, '
+                              'output to stdout'))
+    parser.add_argument('-f', '--flavor', type=str,
+                        help=('The flavor to use to prefix the output, extracted'
+                              'from the config file file'))
+    parser.add_argument('-v', '--stay-verbose', action='store_true',
+                        help='Do not append "Be concise" to the prompt.')
 
     args = parser.parse_args()
 
-    if not args.input_files and not args.reverse:
-        print("Error: No input files or reverse file specified.")
+    if not args.input_files and not args.unscramble:
+        print('Error: No input files or file to unscramble specified.')
         sys.exit(1)
 
     config_files = args.config
@@ -178,10 +180,10 @@ def main():
             sys.exit(1)
         flavor_text = flavors[flavor]
 
-    if args.reverse:
-        with open(args.reverse, "r", encoding='utf-8') as reverse_file:
-            content = reverse_file.read()
-            original_content = reverse_private_words(content, private_words)
+    if args.unscramble:
+        with open(args.unscramble, "r", encoding='utf-8') as unscramble_file:
+            content = unscramble_file.read()
+            original_content = unscramble_private_words(content, private_words)
             print(original_content)
             return
 
@@ -199,6 +201,10 @@ def main():
     processed_content = "\n".join(filter(None, processed_lines))
     processed_content = flavor_text + '\n\n' + \
         replace_private_words(processed_content, private_words)
+
+    if not args.stay_verbose:
+        processed_content += '\n\nBe concise.'
+
     clipboard.copy(processed_content)
 
     encoding = 'cl100k_base'
